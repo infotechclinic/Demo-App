@@ -3,6 +3,7 @@ package com.example.loginandsignup;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,9 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LoginActivity extends AppCompatActivity {
 
     EditText username, password;
+    ImageView eyeIcon;
     Button login;
     DBHelper DB;
-    TextView signUpText,back;
+    TextView signUpText,back,forgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,30 @@ public class LoginActivity extends AppCompatActivity {
         signUpText= findViewById(R.id.signupRedirect);
         back = findViewById(R.id.back);
         DB = new DBHelper(this);
+        eyeIcon = findViewById(R.id.eye_icon);
+        final boolean[] isPassVisible ={false};
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //if user forgots pass then this logic will come
+            }
+        });
+
+        eyeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isPassVisible[0]){
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    eyeIcon.setImageResource(R.drawable.ic_eye_closedd);
+                }else{
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    eyeIcon.setImageResource(R.drawable.ic_eye_opendd);
+                }
+                password.setSelection(password.getText().length());
+                isPassVisible[0] = !isPassVisible[0];
+            }
+        });
 
         login.setOnClickListener(v -> {
             String user = username.getText().toString();

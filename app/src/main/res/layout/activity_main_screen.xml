@@ -13,7 +13,7 @@
         android:id="@+id/imageView"
         android:layout_width="175dp"
         android:layout_height="175dp"
-        android:layout_marginTop="82dp"
+        android:layout_marginTop="92dp"
         app:srcCompat="@drawable/ic_launcher_background"
         tools:layout_editor_absoluteX="166dp"
         tools:layout_editor_absoluteY="162dp" />
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="App name"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="42dp"
         android:textSize="28sp"
         android:textStyle="bold"
         />
@@ -40,7 +40,7 @@
         android:id="@+id/getStartedBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="180dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:text="Get Started -->"
@@ -51,9 +51,10 @@
         android:id="@+id/loginRedirect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/already_user"
         android:gravity="center_horizontal"
-        android:textStyle="italic"
+        android:layout_marginTop="8dp"
+        android:text="@string/already_user"
         android:textColor="#767474"
-        />
+
+        android:textStyle="italic" />
 </LinearLayout>

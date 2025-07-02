@@ -1,6 +1,7 @@
 package com.example.loginandsignup;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.*;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SignupActivity extends AppCompatActivity {
 
     EditText username, password, repassword;
+    ImageView eyeIcon;
     Button signup;
     DBHelper Database;
     TextView loginText,back;
@@ -25,6 +27,25 @@ public class SignupActivity extends AppCompatActivity {
         loginText = findViewById(R.id.loginRedirect);
         back = findViewById(R.id.back);
         Database = new DBHelper(this);
+        eyeIcon = findViewById(R.id.eye_icon);
+        final boolean[] isPassVisible ={false};
+
+        eyeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isPassVisible[0]){
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    repassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    eyeIcon.setImageResource(R.drawable.ic_eye_closedd);
+                }else{
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    repassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    eyeIcon.setImageResource(R.drawable.ic_eye_opendd);
+                }
+                password.setSelection(password.getText().length());
+                isPassVisible[0] = !isPassVisible[0];
+            }
+        });
 
         signup.setOnClickListener(v -> {
             String user = username.getText().toString();
