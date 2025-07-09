@@ -1,10 +1,12 @@
 package com.example.loginandsignup;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.*;
-import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SignupActivity extends AppCompatActivity {
@@ -14,6 +16,7 @@ public class SignupActivity extends AppCompatActivity {
     Button signup;
     DBHelper Database;
     TextView loginText, back;
+    boolean isPassVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,26 +29,28 @@ public class SignupActivity extends AppCompatActivity {
         signup = findViewById(R.id.signupbtn);
         loginText = findViewById(R.id.loginRedirect);
         back = findViewById(R.id.back);
-        Database = new DBHelper(this);
         eyeIcon = findViewById(R.id.eye_icon);
-        final boolean[] isPassVisible = {false};
 
+        Database = new DBHelper(this);
+
+        // Password toggle
         eyeIcon.setOnClickListener(v -> {
-            if (isPassVisible[0]) {
+            if (isPassVisible) {
                 password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 repassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                eyeIcon.setImageResource(R.drawable.ic_eye_closedd);
+                eyeIcon.setImageResource(R.drawable.ic_eye_closedd); // your closed eye icon
             } else {
                 password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 repassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                eyeIcon.setImageResource(R.drawable.ic_eye_opendd);
+                eyeIcon.setImageResource(R.drawable.ic_eye_opendd); // your open eye icon
             }
             password.setSelection(password.getText().length());
-            isPassVisible[0] = !isPassVisible[0];
+            isPassVisible = !isPassVisible;
         });
 
+        // Sign up button click
         signup.setOnClickListener(v -> {
-            String user = username.getText().toString();
+            String user = username.getText().toString().trim();
             String pass = password.getText().toString();
             String repass = repassword.getText().toString();
 
@@ -60,8 +65,14 @@ public class SignupActivity extends AppCompatActivity {
             } else {
                 boolean insert = Database.insertData(user, pass);
                 if (insert) {
+                    // Save login state
+                    SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("isLoggedIn", true);
+                    editor.apply();
+
                     Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                    startActivity(new Intent(SignupActivity.this, HomeScreen.class)); // Or MainActivity if you're using bottom nav
                     finish();
                 } else {
                     Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
@@ -69,11 +80,13 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        // Redirect to login
         loginText.setOnClickListener(v -> {
             startActivity(new Intent(SignupActivity.this, LoginActivity.class));
             finish();
         });
 
+        // Back button
         back.setOnClickListener(v -> {
             Intent intent = getParentActivityIntent();
             if (intent != null) startActivity(intent);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -15,28 +16,27 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     DBHelper DB;
     TextView signUpText, back, forgotPassword;
+    SharedPreferences prefs;
+    boolean isPassVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); // make sure this layout has correct IDs
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         login = findViewById(R.id.loginbtn);
         signUpText = findViewById(R.id.signupRedirect);
         back = findViewById(R.id.back);
-        forgotPassword = findViewById(R.id.forgotPassword); // FIXED
-        DB = new DBHelper(this);
+        forgotPassword = findViewById(R.id.forgotPassword);
         eyeIcon = findViewById(R.id.eye_icon);
-        final boolean[] isPassVisible = {false};
 
-        forgotPassword.setOnClickListener(v -> {
-            Toast.makeText(this, "Forgot password functionality coming soon", Toast.LENGTH_SHORT).show();
-        });
+        DB = new DBHelper(this);
 
+        // Password toggle
         eyeIcon.setOnClickListener(v -> {
-            if (isPassVisible[0]) {
+            if (isPassVisible) {
                 password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 eyeIcon.setImageResource(R.drawable.ic_eye_closedd);
             } else {
@@ -44,20 +44,25 @@ public class LoginActivity extends AppCompatActivity {
                 eyeIcon.setImageResource(R.drawable.ic_eye_opendd);
             }
             password.setSelection(password.getText().length());
-            isPassVisible[0] = !isPassVisible[0];
+            isPassVisible = !isPassVisible;
         });
 
+        // Login button
         login.setOnClickListener(v -> {
-            String user = username.getText().toString();
-            String pass = password.getText().toString();
+            String user = username.getText().toString().trim();
+            String pass = password.getText().toString().trim();
 
             if (user.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
             } else {
                 if (DB.checkUsernamePassword(user, pass)) {
                     Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
-                    SharedPreferences preferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                    preferences.edit().putBoolean("isLoggedIn", true).apply();
+
+                    prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("isLoggedIn", true);
+                    editor.apply();
+
                     startActivity(new Intent(LoginActivity.this, HomeScreen.class));
                     finish();
                 } else {
@@ -66,11 +71,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Forgot password placeholder
+        forgotPassword.setOnClickListener(v ->
+                Toast.makeText(this, "Forgot password functionality coming soon", Toast.LENGTH_SHORT).show()
+        );
+
+        // Go to sign up
         signUpText.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             finish();
         });
 
+        // Back to welcome screen
         back.setOnClickListener(v -> {
             Intent intent = getParentActivityIntent();
             if (intent != null) startActivity(intent);
