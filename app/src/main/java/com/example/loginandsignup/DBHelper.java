@@ -19,6 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS users");
+        onCreate(db); // recreate the table
     }
 
     public boolean insertData(String username, String password) {
