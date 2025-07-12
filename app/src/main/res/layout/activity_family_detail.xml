@@ -1,29 +1,120 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="24dp"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/tvName"
-        android:text="Name:"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvAge"
-        android:text="Age:"
-        android:textSize="18sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <!-- Header -->
+        <TextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Member Details"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
 
-    <TextView
-        android:id="@+id/tvRelation"
-        android:text="Relation:"
-        android:textSize="18sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <!-- Member Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#F5F5F5"
+            android:padding="16dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="2dp">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Age:"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvRelation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Relation:"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="4dp" />
+        </LinearLayout>
+
+        <!-- Reports Section -->
+        <TextView
+            android:id="@+id/tvReports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reports"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvReportsContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No reports uploaded."
+            android:textSize="16sp"
+            android:textColor="#444444"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnUploadReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Report"
+            android:layout_gravity="start"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Prescriptions Section -->
+        <TextView
+            android:id="@+id/tvPrescriptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Prescriptions"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvPrescriptionsContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No prescriptions added."
+            android:textSize="16sp"
+            android:textColor="#444444"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnUploadPrescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Prescription"
+            android:layout_gravity="start"
+            android:layout_marginBottom="24dp" />
+    </LinearLayout>
+</ScrollView>

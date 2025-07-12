@@ -33,7 +33,6 @@ public class SignupActivity extends AppCompatActivity {
 
         Database = new DBHelper(this);
 
-        // Password toggle
         eyeIcon.setOnClickListener(v -> {
             if (isPassVisible) {
                 password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -65,14 +64,13 @@ public class SignupActivity extends AppCompatActivity {
             } else {
                 boolean insert = Database.insertData(user, pass);
                 if (insert) {
-                    // Save login state
                     SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean("isLoggedIn", true);
                     editor.apply();
 
                     Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(SignupActivity.this, HomeScreen.class)); // Or MainActivity if you're using bottom nav
+                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
                     finish();
                 } else {
                     Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
@@ -80,13 +78,11 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        // Redirect to login
         loginText.setOnClickListener(v -> {
             startActivity(new Intent(SignupActivity.this, LoginActivity.class));
             finish();
         });
 
-        // Back button
         back.setOnClickListener(v -> {
             Intent intent = getParentActivityIntent();
             if (intent != null) startActivity(intent);

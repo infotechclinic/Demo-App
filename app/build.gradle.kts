@@ -42,6 +42,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.extjunit)
     androidTestImplementation(libs.espresso)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
 
     // Firebase BoM and Analytics

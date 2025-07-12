@@ -23,15 +23,7 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.ViewHolder
         void onItemClick(FamilyMemberModel member);
     }
 
-    private OnItemClickListener clickListener;
-
-    public FamilyAdapter(Context context, List<FamilyMemberModel> list, FamilyDBHelper dbHelper, Runnable refreshCallback) {
-        this.context = context;
-        this.list = list;
-        this.dbHelper = dbHelper;
-        this.refreshCallback = refreshCallback;
-        this.clickListener = null;
-    }
+    private final OnItemClickListener clickListener;
 
     public FamilyAdapter(Context context, List<FamilyMemberModel> list, FamilyDBHelper dbHelper, Runnable refreshCallback, OnItemClickListener clickListener) {
         this.context = context;
@@ -43,12 +35,13 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.ViewHolder
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_family_member, parent, false));
+    public FamilyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_family_member, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FamilyAdapter.ViewHolder holder, int position) {
         FamilyMemberModel member = list.get(position);
         holder.tvName.setText(member.getName());
         holder.tvAge.setText("Age: " + member.getAge());
@@ -58,6 +51,7 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.ViewHolder
             if (clickListener != null) {
                 clickListener.onItemClick(member);
             } else {
+                // Default behavior: Open Edit screen
                 Intent intent = new Intent(context, EditFamilyMemberActivity.class);
                 intent.putExtra("id", member.getId());
                 context.startActivity(intent);

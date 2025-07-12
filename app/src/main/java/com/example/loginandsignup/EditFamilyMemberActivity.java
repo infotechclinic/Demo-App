@@ -26,8 +26,11 @@ public class EditFamilyMemberActivity extends AppCompatActivity {
         etAge = findViewById(R.id.etAge);
         etRelation = findViewById(R.id.etRelation);
         btnUpdate = findViewById(R.id.btnUpdate);
-        btnDelete = findViewById(R.id.btnDelete);  // New delete button
+        btnDelete = findViewById(R.id.btnDelete);
 
+        LinearLayout rootLayout = findViewById(R.id.rootLayout);
+        rootLayout.setFocusableInTouchMode(true);
+        rootLayout.requestFocus();
         dbHelper = new FamilyDBHelper(this);
 
         memberId = getIntent().getIntExtra("id", -1);
@@ -64,7 +67,6 @@ public class EditFamilyMemberActivity extends AppCompatActivity {
                     .setTitle("Delete Member")
                     .setMessage("Are you sure you want to delete this family member?")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        View rootLayout = findViewById(R.id.rootLayout);
                         rootLayout.animate()
                                 .alpha(0f)
                                 .setDuration(400)
