@@ -6,22 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context=".MainScreenActivity">
+    android:gravity="center_horizontal">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_marginTop="92dp"
-        app:srcCompat="@drawable/ic_launcher_background"
-        tools:layout_editor_absoluteX="166dp"
-        tools:layout_editor_absoluteY="162dp" />
+        android:layout_width="290dp"
+        android:layout_height="290dp"
+        android:layout_marginTop="42dp"
+        android:contentDescription="Login Image"
+        android:padding="4dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App name"
+        android:text="Digital Med Wallet"
         android:layout_marginTop="42dp"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -30,7 +29,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/this_is_subheading_for_app_or_may_be_intro_to_app"
+        android:text="a smart way to store your medical reports"
         android:gravity="center_horizontal"
         android:textStyle="italic"
         android:layout_marginTop="6dp"
@@ -40,7 +39,7 @@
         android:id="@+id/getStartedBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="140dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:text="Get Started -->"

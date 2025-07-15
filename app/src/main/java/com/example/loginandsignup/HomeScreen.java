@@ -1,84 +1,90 @@
 package com.example.loginandsignup;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeScreen extends AppCompatActivity {
-private static final String WELCOME_NOTIFICATION_CHANNEL_ID = "welcome_id";
-private static final int NOTIFICATION_ID = 100;
-    Button logout;
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finishAffinity();
-    }
+
+    BottomNavigationView bottomNav;
+    FloatingActionButton floatingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        logout = findViewById(R.id.logout);
+        // Set default fragment
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .commit();
+        }
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        bottomNav = findViewById(R.id.bottom_nav);
+        floatingButton = findViewById(R.id.floatingButton);
 
-                SharedPreferences pref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean("isLoggedIn", false);
-                editor.apply();
+        loadFragment(new HomeFragment());
 
-                Intent intent = new Intent(HomeScreen.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
+        // Bottom nav click
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_home) {
+                selectedFragment = new HomeFragment();
+                floatingButton.setVisibility(View.VISIBLE); // Show FAB on Home
+            } else {
+                floatingButton.setVisibility(View.GONE); // Hide FAB elsewhere
+                if (itemId == R.id.nav_family) {
+                    selectedFragment = new AddFamilyFragment();
+                } else if (itemId == R.id.nav_profile) {
+                    selectedFragment = new ProfileFragment();
+                }
             }
+
+            if (selectedFragment != null) {
+                loadFragment(selectedFragment);
+                return true;
+            }
+
+            return false;
         });
 
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_launcher_background,null);
 
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        Bitmap largeIcon = bitmapDrawable.getBitmap();
+        // FloatingActionButton click → Open AddFamilyFragment
+        floatingButton.setOnClickListener(view -> {
+            loadFragment(new AddFamilyFragment());
+            bottomNav.setSelectedItemId(R.id.nav_family);
+            floatingButton.setVisibility(View.GONE); // Hide FAB after opening Family
+        });
 
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Notification Welcomenotification;
+    }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Welcomenotification = new Notification.Builder(this)
-                    .setLargeIcon(largeIcon)
-                    .setSmallIcon(R.drawable.ic_eye_opendd)
-                    .setContentText("You have successfully logged in")
-                    .setSubText("New Message from this app...")
-                    .setChannelId(WELCOME_NOTIFICATION_CHANNEL_ID)
-                    .build();
-            nm.createNotificationChannel(new NotificationChannel(WELCOME_NOTIFICATION_CHANNEL_ID,"New Channel",NotificationManager.IMPORTANCE_HIGH));
-        }else{
-            Welcomenotification = new Notification.Builder(this)
-                    .setLargeIcon(largeIcon)
-                    .setSmallIcon(R.drawable.ic_eye_opendd)
-                    .setContentText("You have successfully logged in")
-                    .setSubText("New Message from this app...")
-                    .build();
+    @Override
+    public void onBackPressed() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (!(currentFragment instanceof HomeFragment)) {
+            loadFragment(new HomeFragment());
+            bottomNav.setSelectedItemId(R.id.nav_home);
+            floatingButton.setVisibility(View.VISIBLE); // Show FAB again
+        } else {
+            super.onBackPressed();
         }
-        nm.notify(NOTIFICATION_ID,Welcomenotification);
+    }
 
+
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 }

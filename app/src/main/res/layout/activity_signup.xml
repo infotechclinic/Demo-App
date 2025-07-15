@@ -4,55 +4,67 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
+        <!-- Back -->
         <TextView
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:layout_gravity="start"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp" />
+            android:layout_marginBottom="12dp" />
 
+        <!-- Sign Up Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="@string/signUp"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:layout_marginBottom="85dp" />
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp" />
 
+        <!-- Logo / Image -->
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/ic_launcher_background"
-            android:layout_marginBottom="85dp" />
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:src="@drawable/img"
+            android:layout_marginBottom="36dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_background"
+            android:padding="6dp"
+            android:contentDescription="App Logo" />
 
+        <!-- Username -->
         <EditText
             android:id="@+id/username"
-            android:hint="@string/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp" />
+            android:hint="@string/username"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:layout_marginBottom="14dp" />
 
+        <!-- Password -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp">
+            android:layout_marginBottom="14dp">
 
             <EditText
                 android:id="@+id/password"
@@ -60,9 +72,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:paddingEnd="50dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true" />
+                android:padding="12dp"
+                android:background="@drawable/edittext_background"
+                android:textColor="@color/black"
+                android:paddingEnd="50dp" />
 
             <ImageView
                 android:id="@+id/eye_icon"
@@ -70,44 +83,48 @@
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="12dp"
                 android:src="@drawable/ic_eye_closedd"
+                android:tint="@color/black"
                 android:contentDescription="Show Password"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true" />
         </RelativeLayout>
 
-
+        <!-- Confirm Password -->
         <EditText
             android:id="@+id/repassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp" />
+            android:padding="12dp"
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp" />
 
+        <!-- Signup Button -->
         <Button
             android:id="@+id/signupbtn"
-            android:text="@string/register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="20dp" />
+            android:text="@string/register"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp" />
 
+        <!-- Already have account -->
         <TextView
             android:id="@+id/loginRedirect"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/already_user"
             android:textColor="#767474"
-            android:gravity="end"
             android:textStyle="italic"
             android:textSize="13sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp" />
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp" />
 
     </LinearLayout>
 </ScrollView>

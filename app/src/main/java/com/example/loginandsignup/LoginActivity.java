@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -14,87 +15,79 @@ public class LoginActivity extends AppCompatActivity {
     ImageView eyeIcon;
     Button login;
     DBHelper DB;
-    TextView signUpText,back,forgotPassword;
+    TextView signUpText, back, forgotPassword;
+    SharedPreferences prefs;
+    boolean isPassVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); // make sure this layout has correct IDs
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         login = findViewById(R.id.loginbtn);
-        signUpText= findViewById(R.id.signupRedirect);
+        signUpText = findViewById(R.id.signupRedirect);
         back = findViewById(R.id.back);
-        DB = new DBHelper(this);
+        forgotPassword = findViewById(R.id.forgotPassword);
         eyeIcon = findViewById(R.id.eye_icon);
-        final boolean[] isPassVisible ={false};
 
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //if user forgots pass then this logic will come
+        DB = new DBHelper(this);
+
+        // Password toggle
+        eyeIcon.setOnClickListener(v -> {
+            if (isPassVisible) {
+                password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                eyeIcon.setImageResource(R.drawable.ic_eye_closedd);
+            } else {
+                password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                eyeIcon.setImageResource(R.drawable.ic_eye_opendd);
             }
+            password.setSelection(password.getText().length());
+            isPassVisible = !isPassVisible;
         });
 
-        eyeIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isPassVisible[0]){
-                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    eyeIcon.setImageResource(R.drawable.ic_eye_closedd);
-                }else{
-                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    eyeIcon.setImageResource(R.drawable.ic_eye_opendd);
-                }
-                password.setSelection(password.getText().length());
-                isPassVisible[0] = !isPassVisible[0];
-            }
-        });
-
+        // Login button
         login.setOnClickListener(v -> {
-            String user = username.getText().toString();
-            String pass = password.getText().toString();
+            String user = username.getText().toString().trim();
+            String pass = password.getText().toString().trim();
 
             if (user.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
             } else {
                 if (DB.checkUsernamePassword(user, pass)) {
-                    Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, HomeScreen.class);
-                    startActivity(intent);
-                    SharedPreferences preferences = getSharedPreferences("MyAppPrefs",MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("isLoggedIn",true);
+                    Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
+
+                    prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("isLoggedIn", true);
                     editor.apply();
+
+                    startActivity(new Intent(LoginActivity.this, HomeScreen.class));
                     finish();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        signUpText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,SignupActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        // Forgot password placeholder
+        forgotPassword.setOnClickListener(v ->
+                Toast.makeText(this, "Forgot password functionality coming soon", Toast.LENGTH_SHORT).show()
+        );
+
+        // Go to sign up
+        signUpText.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+            finish();
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = getParentActivityIntent();
-                if(intent != null){
-                    startActivity(intent);
-                }else{
-                    Intent back = new Intent(getApplicationContext(),MainScreenActivity.class);
-                    startActivity(back);
-                }
-                finish();
-            }
+        // Back to welcome screen
+        back.setOnClickListener(v -> {
+            Intent intent = getParentActivityIntent();
+            if (intent != null) startActivity(intent);
+            else startActivity(new Intent(this, MainScreenActivity.class));
+            finish();
         });
     }
 }

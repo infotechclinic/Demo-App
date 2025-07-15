@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "LoginAndSignUp"
 include(":app")
- 
